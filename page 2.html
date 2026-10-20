@@ -275,16 +275,16 @@
     // 2. CONNECT TO SUPABASE
     // ==========================================
 
-    function connectToSupabase() {
+     function connectToSupabase() {
       if (
         !window.supabase ||
-        SUPABASE_URL === "https://rtrxcqoprdihifzeefjn.supabase.co" ||
-        SUPABASE_PUBLISHABLE_KEY === "sb_publishable_ytigq2n1TaK69SpJEcnmHA_NdpiUtuZ"
+        SUPABASE_URL === "YOUR_SUPABASE_PROJECT_URL" ||
+        SUPABASE_PUBLISHABLE_KEY === "YOUR_SUPABASE_PUBLISHABLE_KEY"
       ) {
         status.textContent =
           "Setup needed: add your Supabase project URL and publishable key to the HTML file.";
         wishesContainer.replaceChildren();
-
+        
         const message = document.createElement("p");
         message.className = "empty";
         message.textContent =
