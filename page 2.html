@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Birthday Wishes</title>
+
+  <title>Birthday Wishes 🎂</title>
+  <meta name="description" content="Leave a special birthday wish and share the love!">
 
   <style>
     * {
@@ -13,202 +15,436 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fffafb;
-      color: #333;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #4b2940;
+      background: linear-gradient(135deg, #fff1f5, #f5eaff, #fff8e7);
     }
 
-    header {
+    .hero {
+      padding: 65px 20px 45px;
       text-align: center;
-      padding: 70px 20px 35px;
     }
 
-    header h1 {
-      font-family: Georgia, serif;
-      font-size: 44px;
-      font-weight: normal;
-      margin-bottom: 15px;
-      color: #bd6486;
+    .hero .cake {
+      font-size: 65px;
+      margin-bottom: 12px;
     }
 
-    header p {
-      color: #777;
+    .hero h1 {
+      margin: 0 0 16px;
+      font-size: clamp(32px, 6vw, 52px);
+      color: #b83280;
+    }
+
+    .hero p {
+      max-width: 550px;
+      margin: auto;
       line-height: 1.7;
+      color: #76566c;
+      font-size: 17px;
     }
 
-    main {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
+    .container {
+      width: min(650px, calc(100% - 32px));
+      margin: 0 auto 60px;
     }
 
     .card {
-      background: white;
-      border: 1px solid #f0e3e8;
-      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.94);
       padding: 28px;
-      margin-bottom: 25px;
+      margin-bottom: 28px;
+      border-radius: 22px;
+      box-shadow: 0 10px 35px rgba(140, 70, 120, 0.10);
     }
 
     h2 {
-      font-size: 21px;
       margin-top: 0;
+      color: #a52b75;
+    }
+
+    .form-intro {
+      margin-bottom: 24px;
+      color: #806579;
+      line-height: 1.6;
     }
 
     label {
       display: block;
-      margin: 18px 0 8px;
-      font-size: 14px;
+      margin-bottom: 8px;
       font-weight: bold;
     }
 
-    input, textarea {
+    input,
+    textarea {
+      display: block;
       width: 100%;
-      padding: 13px;
-      border: 1px solid #e5d9df;
-      border-radius: 8px;
+      padding: 14px;
+      border: 1px solid #ead5e5;
+      border-radius: 12px;
       font: inherit;
+      color: #4b2940;
+      background: #fffafd;
+      outline: none;
+      margin-bottom: 20px;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #d454a0;
+      box-shadow: 0 0 0 3px rgba(212, 84, 160, 0.12);
     }
 
     textarea {
-      height: 130px;
+      min-height: 130px;
       resize: vertical;
-    }
-
-    input:focus, textarea:focus {
-      outline: 2px solid #e8b5ca;
     }
 
     button {
       width: 100%;
-      padding: 14px;
-      margin-top: 20px;
-      background: #bd6486;
-      color: white;
+      padding: 15px 20px;
       border: none;
-      border-radius: 8px;
-      font-size: 15px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #d946a0, #a855c9);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
     }
 
     button:hover {
-      background: #a94e72;
+      transform: translateY(-1px);
     }
 
-    .wish {
-      border-top: 1px solid #f0e3e8;
-      padding: 18px 0;
-      overflow-wrap: anywhere;
-    }
-
-    .wish strong {
-      color: #bd6486;
-    }
-
-    .wish p {
-      white-space: pre-wrap;
-      line-height: 1.6;
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     #status {
-      font-size: 14px;
-      margin-top: 12px;
+      margin: 16px 0 0;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .wish {
+      padding: 20px;
+      border: 1px solid #f1deec;
+      border-radius: 15px;
+      margin-top: 16px;
+      background: #fff9fd;
+      overflow-wrap: anywhere;
+    }
+
+    .wish h3 {
+      margin: 0 0 10px;
+      color: #ad347e;
+      font-size: 17px;
+    }
+
+    .wish p {
+      margin: 0 0 12px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .wish small {
+      color: #91768a;
+    }
+
+    .empty {
+      color: #806579;
+      line-height: 1.6;
+      text-align: center;
+      padding: 20px 0;
     }
 
     footer {
+      padding: 25px 16px;
       text-align: center;
-      color: #999;
-      font-size: 13px;
-      padding: 30px 15px;
+      color: #896c80;
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding-top: 45px;
+      }
+
+      .card {
+        padding: 21px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>Birthday Wishes 🎂</h1>
+
+  <header class="hero">
+    <div class="cake">🎂</div>
+    <h1>Birthday Wishes 💖</h1>
     <p>
-      A special day deserves special words.<br>
-      Leave a birthday wish and make it memorable. ♡
+      Every birthday becomes more special with love from
+      the people around us. Leave a sweet message below
+      and make this celebration unforgettable! ✨
     </p>
   </header>
 
-  <main>
+  <main class="container">
+
     <section class="card">
-      <h2>Write a birthday wish</h2>
+      <h2>💌 Leave a Birthday Wish</h2>
+
+      <p class="form-intro">
+        Have something sweet to say? Write your message
+        and share your love!
+      </p>
 
       <form id="wishForm">
         <label for="name">Your name</label>
         <input
-          id="name"
           type="text"
+          id="name"
+          name="name"
           placeholder="Enter your name"
           maxlength="60"
+          autocomplete="name"
           required
         >
 
-        <label for="message">Your message</label>
+        <label for="message">Your birthday message</label>
         <textarea
           id="message"
-          placeholder="Write your birthday message..."
+          name="message"
+          placeholder="Write your lovely birthday wish here... 💕"
           maxlength="1000"
           required
         ></textarea>
 
-        <button type="submit">Send birthday wish ♡</button>
-        <p id="status" role="status"></p>
+        <button type="submit" id="submitButton">
+          Send Birthday Wish 💗
+        </button>
+
+        <p id="status" role="status" aria-live="polite"></p>
       </form>
     </section>
 
     <section class="card">
-      <h2>Birthday wishes</h2>
+      <h2>🎁 Messages Full of Love</h2>
+      <p class="form-intro">
+        Read the beautiful birthday wishes everyone has shared.
+      </p>
+
       <div id="wishes">
-        <p>Be the first to leave a birthday wish! 💗</p>
+        <p class="empty">Loading birthday wishes... 💕</p>
       </div>
     </section>
+
   </main>
 
   <footer>
-    Made with love ♡
+    Made with love, happiness, and birthday magic ✨
   </footer>
 
+  <!-- Load the Supabase JavaScript library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
+  <script>
+    // ==========================================
+    // 1. ADD YOUR SUPABASE PROJECT DETAILS HERE
+    // ==========================================
+
     const SUPABASE_URL = "https://rtrxcqoprdihifzeefjn.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_ytigq2n1TaK69SpJEcnmHA_NdpiUtuZ";
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_ytigq2n1TaK69SpJEcnmHA_NdpiUtuZ";
+
+    // Do not use your service_role or secret key here.
 
     const form = document.getElementById("wishForm");
-    const wishes = document.getElementById("wishes");
+    const nameInput = document.getElementById("name");
+    const messageInput = document.getElementById("message");
+    const submitButton = document.getElementById("submitButton");
     const status = document.getElementById("status");
+    const wishesContainer = document.getElementById("wishes");
 
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
+    let supabaseClient = null;
 
-      const name = document.getElementById("name").value.trim();
-      const message = document.getElementById("message").value.trim();
+    // ==========================================
+    // 2. CONNECT TO SUPABASE
+    // ==========================================
 
-      if (!name || !message) return;
+    function connectToSupabase() {
+      if (
+        !window.supabase ||
+        SUPABASE_URL === "https://rtrxcqoprdihifzeefjn.supabase.co" ||
+        SUPABASE_PUBLISHABLE_KEY === "sb_publishable_ytigq2n1TaK69SpJEcnmHA_NdpiUtuZ"
+      ) {
+        status.textContent =
+          "Setup needed: add your Supabase project URL and publishable key to the HTML file.";
+        wishesContainer.replaceChildren();
 
-      const card = document.createElement("div");
-      card.className = "wish";
+        const message = document.createElement("p");
+        message.className = "empty";
+        message.textContent =
+          "Connect your Supabase project to load birthday wishes.";
 
-      const heading = document.createElement("strong");
-      heading.textContent = name;
-
-      const text = document.createElement("p");
-      text.textContent = message;
-
-      card.append(heading, text);
-
-      if (wishes.querySelector(".wish") === null) {
-        wishes.replaceChildren();
+        wishesContainer.appendChild(message);
+        submitButton.disabled = true;
+        return false;
       }
 
-      wishes.prepend(card);
-      form.reset();
-      status.textContent = "Your birthday wish has been added! ♡";
+      try {
+        supabaseClient = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+        return true;
+      } catch (error) {
+        console.error(error);
+        status.textContent =
+          "Could not initialize Supabase. Check your project settings.";
+        submitButton.disabled = true;
+        return false;
+      }
+    }
+
+    // ==========================================
+    // 3. LOAD SAVED BIRTHDAY WISHES
+    // ==========================================
+
+    async function loadWishes() {
+      if (!supabaseClient) return;
+
+      wishesContainer.replaceChildren();
+
+      const loading = document.createElement("p");
+      loading.className = "empty";
+      loading.textContent = "Loading wishes... 💕";
+      wishesContainer.appendChild(loading);
+
+      const { data, error } = await supabaseClient
+        .from("birthday_wishes")
+        .select("id, name, message, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100);
+
+      if (error) {
+        console.error("Loading wishes failed:", error);
+        wishesContainer.replaceChildren();
+
+        const errorMessage = document.createElement("p");
+        errorMessage.className = "empty";
+        errorMessage.textContent =
+          "Birthday wishes could not be loaded. Please try refreshing the page.";
+
+        wishesContainer.appendChild(errorMessage);
+        return;
+      }
+
+      wishesContainer.replaceChildren();
+
+      if (!data || data.length === 0) {
+        const emptyMessage = document.createElement("p");
+        emptyMessage.className = "empty";
+        emptyMessage.textContent =
+          "No wishes yet. Be the first to leave a little birthday love! 💗";
+
+        wishesContainer.appendChild(emptyMessage);
+        return;
+      }
+
+      data.forEach(function(wish) {
+        const card = document.createElement("article");
+        card.className = "wish";
+
+        const heading = document.createElement("h3");
+        heading.textContent = "💌 " + wish.name;
+
+        const message = document.createElement("p");
+        message.textContent = wish.message;
+
+        const date = document.createElement("small");
+        const parsedDate = new Date(wish.created_at);
+
+        date.textContent = Number.isNaN(parsedDate.getTime())
+          ? ""
+          : parsedDate.toLocaleString();
+
+        card.append(heading, message, date);
+        wishesContainer.appendChild(card);
+      });
+    }
+
+    // ==========================================
+    // 4. SAVE A NEW BIRTHDAY WISH
+    // ==========================================
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      if (!supabaseClient) {
+        status.textContent = "Supabase is not connected yet.";
+        return;
+      }
+
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+
+      if (name.length < 1 || name.length > 60) {
+        status.textContent =
+          "Your name must be between 1 and 60 characters.";
+        return;
+      }
+
+      if (message.length < 1 || message.length > 1000) {
+        status.textContent =
+          "Your message must be between 1 and 1000 characters.";
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending your wish... 💌";
+      status.textContent = "";
+
+      try {
+        const { error } = await supabaseClient
+          .from("birthday_wishes")
+          .insert({
+            name: name,
+            message: message
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        form.reset();
+        status.textContent =
+          "Your birthday wish has been saved successfully! 🎉💖";
+
+        await loadWishes();
+
+      } catch (error) {
+        console.error("Saving wish failed:", error);
+        status.textContent =
+          "Sorry, your wish could not be saved. Please try again.";
+
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Send Birthday Wish 💗";
+      }
     });
+
+    // ==========================================
+    // 5. START THE PAGE
+    // ==========================================
+
+    if (connectToSupabase()) {
+      loadWishes();
+    }
   </script>
+
 </body>
 </html>
