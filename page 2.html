@@ -237,14 +237,14 @@
       </p>
 
       <div id="wishes">
-        <p class="empty">Loading birthday wishes... 💕</p>
+        <p class="empty">Loading birthday wishes... </p>
       </div>
     </section>
 
   </main>
 
   <footer>
-    Made with love, happiness, and birthday magic ✨
+    Got the code from Chat GPT obviously, but I connected the message box to an external database manually. Also changed most of the CSS codes.
   </footer>
 
   <!-- Load the Supabase JavaScript library -->
@@ -404,7 +404,7 @@
       }
 
       submitButton.disabled = true;
-      submitButton.textContent = "Sending your wish... 💌";
+      submitButton.textContent = "Sending your wish...";
       status.textContent = "";
 
       try {
@@ -421,7 +421,7 @@
 
         form.reset();
         status.textContent =
-          "Your birthday wish has been saved successfully! 🎉💖";
+          "Your birthday wish has been saved successfully! 🎉";
 
         await loadWishes();
 
@@ -432,7 +432,7 @@
 
       } finally {
         submitButton.disabled = false;
-        submitButton.textContent = "Send Birthday Wish 💗";
+        submitButton.textContent = "Send Birthday Wish ";
       }
     });
 
