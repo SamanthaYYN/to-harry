@@ -193,13 +193,14 @@
 
   <main class="container">
 
-    <section class="card">
+    <section class="card" id="messagesSection" hidden>
       <h2> Leave a Birthday Wish for Harry! </h2>
-
-      <p class="form-intro">
-        Have something nice to say? Write your message
-        and share your it here!
-      </p>
+      
+<p class="form-intro">
+  These birthday wishes are private and visible only to people
+  with the shared password.
+</p>
+<button type="button" id="logoutButton">Lock Messages</button>
 
       <form id="wishForm">
         <label for="name">Your name</label>
@@ -231,6 +232,29 @@
     </section>
 
     <section class="card">
+      
+<section class="card" id="loginSection">
+  <h2>🔒 Private Birthday Messages</h2>
+  <p class="form-intro">
+    Enter the shared password to read Harry's birthday wishes.
+  </p>
+
+  <form id="loginForm">
+    <label for="viewPassword">Password</label>
+    <input
+      type="password"
+      id="viewPassword"
+      placeholder="Enter the password"
+      autocomplete="current-password"
+      required
+    >
+    <button type="submit" id="loginButton">
+      Unlock Messages
+    </button>
+    <p id="loginStatus" role="status" aria-live="polite"></p>
+  </form>
+</section>
+
       <h2>🎁 Messages</h2>
       <p class="form-intro">
         Read the birthday wishes everyone has shared.
@@ -314,6 +338,18 @@
     // ==========================================
 
     async function loadWishes() {
+      
+const loginForm = document.getElementById("loginForm");
+const passwordInput = document.getElementById("viewPassword");
+const loginButton = document.getElementById("loginButton");
+const loginStatus = document.getElementById("loginStatus");
+const loginSection = document.getElementById("loginSection");
+const messagesSection = document.getElementById("messagesSection");
+const logoutButton = document.getElementById("logoutButton");
+
+// Use the email of the account you created in Supabase Authentication.
+const SHARED_LOGIN_EMAIL = "harryhallsalt@gmail.com";
+
       if (!supabaseClient) return;
 
       wishesContainer.replaceChildren();
