@@ -403,6 +403,49 @@ const SHARED_LOGIN_EMAIL = "harryhallsalt@gmail.com";
         wishesContainer.appendChild(card);
       });
     }
+    
+loginForm.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  if (!supabaseClient) {
+    loginStatus.textContent =
+      "Connection unavailable. Please refresh.";
+    return;
+  }
+
+  loginButton.disabled = true;
+  loginButton.textContent = "Checking password...";
+  loginStatus.textContent = "";
+
+  try {
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email: SHARED_LOGIN_EMAIL,
+      password: passwordInput.value
+    });
+
+    if (error) {
+      loginStatus.textContent =
+        "Incorrect password or email. Please try again.";
+      passwordInput.value = "";
+      return;
+    }
+
+    passwordInput.value = "";
+    showPrivateMessages(true);
+    await loadWishes();
+
+    loginStatus.textContent = "";
+
+  } catch (error) {
+    console.error("Login failed:", error);
+    loginStatus.textContent =
+      "Could not sign in. Please try again.";
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "Unlock Messages";
+  }
+});
+
 
     // ==========================================
     // 4. SAVE A NEW BIRTHDAY WISH
