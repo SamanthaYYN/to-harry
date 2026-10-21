@@ -6,6 +6,7 @@
   <input type="password" id="password" placeholder="Password">
   <button onclick="unlock()">Enter</button>
   <p id="error" style="color:red;"></p>
+    
     <br><br>
 
   <button onclick="showHint()">Hint</button>
@@ -29,10 +30,12 @@
       document.getElementById("error").textContent = "Incorrect password";
     }
   }
+  
    function showHint() {
     const hint = document.getElementById("hint");
     hint.textContent = "a special date in Sheffield📅";
     hint.style.display = "block";
+     
 </script>
   <div id="website" style="display:none;">
 
