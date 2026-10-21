@@ -191,73 +191,92 @@
  
   </header>
 
-  <main class="container">
+ 
+<main class="container">
 
-    <!-- PUBLIC: Everyone can post -->
-<section class="card">
-  <h2>Leave a Birthday Wish for Harry!</h2>
-      
-<p class="form-intro">
- Leave a Wish Here... (All wishes are private, only Harry and I can read it)
-</p>
+  <!-- PUBLIC: Anyone can post a wish -->
+  <section class="card">
+    <h2>Leave a Birthday Wish for Harry!</h2>
 
-      <form id="wishForm">
-        <label for="name">Your name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Enter your name"
-          maxlength="60"
-          autocomplete="name"
-          required
-        >
+    <p class="form-intro">
+      Leave a wish here! Only people with the password can read
+      the birthday messages.
+    </p>
 
-        <label for="message">Your birthday message</label>
-        <textarea
-          id="message"
-          name="message"
-          placeholder="Write your birthday wish here... "
-          maxlength="1000"
-          required
-        ></textarea>
+    <form id="wishForm">
+      <label for="name">Your name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Enter your name"
+        maxlength="60"
+        autocomplete="name"
+        required
+      >
 
-        <button type="submit" id="submitButton">
-          Send Birthday Wish !
-        </button>
+      <label for="message">Your birthday message</label>
+      <textarea
+        id="message"
+        name="message"
+        placeholder="Write your birthday wish here..."
+        maxlength="1000"
+        required
+      ></textarea>
 
-        <p id="status" role="status" aria-live="polite"></p>
-      </form>
-    </section>
-    
-    <section class="card">
-      
-<section class="card" id="loginSection">
+      <button type="submit" id="submitButton">
+        Send Birthday Wish!
+      </button>
 
-  <p class="form-intro">
-    Enter the shared password to read Harry's birthday wishes.
-  </p>
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
 
-  <form id="loginForm">
-    <label for="viewPassword">Password</label>
-    <input
-      type="password"
-      id="viewPassword"
-      placeholder="Enter the password"
-      autocomplete="current-password"
-      required
-    >
-    <button type="submit" id="loginButton">
-      Unlock Messages
+  <!-- PRIVATE: Password required to read -->
+  <section class="card" id="loginSection">
+    <h2>🔒 Private Birthday Messages</h2>
+
+    <p class="form-intro">
+      Enter the shared password to read Harry's birthday wishes.
+    </p>
+
+    <form id="loginForm">
+      <label for="viewPassword">Password</label>
+      <input
+        type="password"
+        id="viewPassword"
+        placeholder="Enter the password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit" id="loginButton">
+        Unlock Messages
+      </button>
+
+      <p id="loginStatus" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <!-- Hidden until login succeeds -->
+  <section class="card" id="messagesSection" hidden>
+    <h2>🎁 Birthday Wishes</h2>
+
+    <p class="form-intro">
+      These messages are private.
+    </p>
+
+    <button type="button" id="logoutButton">
+      Lock Messages
     </button>
-    <p id="loginStatus" role="status" aria-live="polite"></p>
-  </form>
-</section>
 
-     
-    </section>
+    <div id="wishes">
+      <p class="empty">Unlock messages to read the wishes.</p>
+    </div>
+  </section>
 
-  </main>
+</main>
+
 
   <footer>
     Got the main message box code from Chat GPT obviously, but I connected the message box to an external database manually. Also changed most of the CSS codes.
