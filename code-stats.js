@@ -96,7 +96,6 @@ if (/\.html?$/i.test(file.path)) {
 
     container.innerHTML = `
       <h2>Website Code Breakdown</h2>
-      <p>Measured by non-empty source lines</p>
       ${Object.entries(counts).map(([name, lines]) => {
         const pct = (lines / total * 100);
         return `
