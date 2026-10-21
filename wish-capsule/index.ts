@@ -65,7 +65,22 @@ async function authenticatedUser(req: Request) {
   return data.user;
 }
 
+async function 
 async function getWish() {
+  const { data, error } = await admin.rpc("get_sealed_wish");
+  if (error) throw error;
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row) return null;
+
+  return {
+    id: row.wish_id,
+    writer_id: row.writer_id,
+    wish_text: row.wish_text,
+    created_at: row.created_at,
+    unlock_at: row.unlock_at,
+  };
+}
+ {
   const { data, error } = await admin
     .schema("private")
     .from("wishes")
