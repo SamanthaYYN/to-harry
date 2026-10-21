@@ -46,9 +46,41 @@ async function showCodeStats() {
           line => line.trim().length > 0
         ).length;
 
-        if (/\.html?$/i.test(file.path)) counts.HTML += lines;
-        else if (/\.css$/i.test(file.path)) counts.CSS += lines;
-        else if (/\.js$/i.test(file.path)) counts.JavaScript += lines;
+        
+if (/\.html?$/i.test(file.path)) {
+  // Count CSS inside <style> tags separately.
+  const cssBlocks = [...source.matchAll(
+    /<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi
+  )];
+
+  // Count JavaScript inside <script> tags separately.
+  const jsBlocks = [...source.matchAll(
+    /<script\b(?![^>]*\bsrc\s*=)[^>]*>([\s\S]*?)<\/script\s*>/gi
+  )];
+
+  let htmlSource = source;
+
+  for (const match of cssBlocks) {
+    counts.CSS += match[1].split(/\r\n|\r|\n/)
+      .filter(line => line.trim()).length;
+    htmlSource = htmlSource.replace(match[0], "");
+  }
+
+  for (const match of jsBlocks) {
+    counts.JavaScript += match[1].split(/\r\n|\r|\n/)
+      .filter(line => line.trim()).length;
+    htmlSource = htmlSource.replace(match[0], "");
+  }
+
+  counts.HTML += htmlSource.split(/\r\n|\r|\n/)
+    .filter(line => line.trim()).length;
+
+} else if (/\.css$/i.test(file.path)) {
+  counts.CSS += lines;
+} else if (/\.js$/i.test(file.path)) {
+  counts.JavaScript += lines;
+}
+
       }));
     }
 
