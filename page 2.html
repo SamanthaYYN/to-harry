@@ -285,282 +285,413 @@
   <!-- Load the Supabase JavaScript library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    // ==========================================
-    // 1. ADD YOUR SUPABASE PROJECT DETAILS HERE
-    // ==========================================
+  
 
-    const SUPABASE_URL = "https://rtrxcqoprdihifzeefjn.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_ytigq2n1TaK69SpJEcnmHA_NdpiUtuZ";
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    // Do not use your service_role or secret key here.
+<script>
 
-    const form = document.getElementById("wishForm");
-    const nameInput = document.getElementById("name");
-    const messageInput = document.getElementById("message");
-    const submitButton = document.getElementById("submitButton");
-    const status = document.getElementById("status");
-    const wishesContainer = document.getElementById("wishes");
+  // 1. SUPABASE SETTINGS
 
-    let supabaseClient = null;
+  const SUPABASE_URL = "https://rtrxcqoprdihifzeefjn.supabase.co";
 
-    // ==========================================
-    // 2. CONNECT TO SUPABASE
-    // ==========================================
+  const SUPABASE_PUBLISHABLE_KEY =
 
-     function connectToSupabase() {
-      if (
-        !window.supabase ||
-        SUPABASE_URL === "YOUR_SUPABASE_PROJECT_URL" ||
-        SUPABASE_PUBLISHABLE_KEY === "YOUR_SUPABASE_PUBLISHABLE_KEY"
-      ) {
-        status.textContent =
-          "Setup needed: add your Supabase project URL and publishable key to the HTML file.";
-        wishesContainer.replaceChildren();
-        
-        const message = document.createElement("p");
-        message.className = "empty";
-        message.textContent =
-          "Connect your Supabase project to load birthday wishes.";
+    "sb_publishable_ytigq2n1TaK69SpJEcnmHA_NdpiUtuZ";
 
-        wishesContainer.appendChild(message);
-        submitButton.disabled = true;
-        return false;
+  const SHARED_LOGIN_EMAIL = "harryhallsalt@gmail.com";
+
+  // 2. ELEMENTS
+
+  const form = document.getElementById("wishForm");
+
+  const nameInput = document.getElementById("name");
+
+  const messageInput = document.getElementById("message");
+
+  const submitButton = document.getElementById("submitButton");
+
+  const status = document.getElementById("status");
+
+  const wishesContainer = document.getElementById("wishes");
+
+  const loginForm = document.getElementById("loginForm");
+
+  const passwordInput = document.getElementById("viewPassword");
+
+  const loginButton = document.getElementById("loginButton");
+
+  const loginStatus = document.getElementById("loginStatus");
+
+  const loginSection = document.getElementById("loginSection");
+
+  const messagesSection = document.getElementById("messagesSection");
+
+  const logoutButton = document.getElementById("logoutButton");
+
+  let supabaseClient = null;
+
+  let isUnlocked = false;
+
+  // 3. CONNECT TO SUPABASE
+
+  function connectToSupabase() {
+
+    try {
+
+      if (!window.supabase) {
+
+        throw new Error("Supabase library did not load.");
+
       }
 
-      try {
-        supabaseClient = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY
-        );
-        return true;
-      } catch (error) {
-        console.error(error);
-        status.textContent =
-          "Could not initialize Supabase. Check your project settings.";
-        submitButton.disabled = true;
-        return false;
-      }
+      supabaseClient = window.supabase.createClient(
+
+        SUPABASE_URL,
+
+        SUPABASE_PUBLISHABLE_KEY
+
+      );
+
+      return true;
+
+    } catch (error) {
+
+      console.error("Supabase connection failed:", error);
+
+      status.textContent = "Database connection unavailable.";
+
+      loginStatus.textContent = "Database connection unavailable.";
+
+      submitButton.disabled = true;
+
+      loginButton.disabled = true;
+
+      return false;
+
     }
 
-    // ==========================================
-    // 3. LOAD SAVED BIRTHDAY WISHES
-    // ==========================================
-
-    async function loadWishes() {
-      
-const loginForm = document.getElementById("loginForm");
-const passwordInput = document.getElementById("viewPassword");
-const loginButton = document.getElementById("loginButton");
-const loginStatus = document.getElementById("loginStatus");
-const loginSection = document.getElementById("loginSection");
-const messagesSection = document.getElementById("messagesSection");
-const logoutButton = document.getElementById("logoutButton");
-
-// Use the email of the account you created in Supabase Authentication.
-const SHARED_LOGIN_EMAIL = "harryhallsalt@gmail.com";
-
-      if (!supabaseClient) return;
-
-      wishesContainer.replaceChildren();
-
-      const loading = document.createElement("p");
-      loading.className = "empty";
-      loading.textContent = "Loading wishes... 💕";
-      wishesContainer.appendChild(loading);
-
-      const { data, error } = await supabaseClient
-        .from("birthday_wishes")
-        .select("id, name, message, created_at")
-        .order("created_at", { ascending: false })
-        .limit(100);
-
-      if (error) {
-        console.error("Loading wishes failed:", error);
-        wishesContainer.replaceChildren();
-
-        const errorMessage = document.createElement("p");
-        errorMessage.className = "empty";
-        errorMessage.textContent =
-          "Birthday wishes could not be loaded. Please try refreshing the page.";
-
-        wishesContainer.appendChild(errorMessage);
-        return;
-      }
-
-      wishesContainer.replaceChildren();
-
-      if (!data || data.length === 0) {
-        const emptyMessage = document.createElement("p");
-        emptyMessage.className = "empty";
-        emptyMessage.textContent =
-          "No wishes yet. Be the first to leave a little birthday love! 💗";
-
-        wishesContainer.appendChild(emptyMessage);
-        return;
-      }
-
-      data.forEach(function(wish) {
-        const card = document.createElement("article");
-        card.className = "wish";
-
-        const heading = document.createElement("h3");
-        heading.textContent = "💌 " + wish.name;
-
-        const message = document.createElement("p");
-        message.textContent = wish.message;
-
-        const date = document.createElement("small");
-        const parsedDate = new Date(wish.created_at);
-
-        date.textContent = Number.isNaN(parsedDate.getTime())
-          ? ""
-          : parsedDate.toLocaleString();
-
-        card.append(heading, message, date);
-        wishesContainer.appendChild(card);
-      });
-    }
-    
-loginForm.addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  if (!supabaseClient) {
-    loginStatus.textContent =
-      "Connection unavailable. Please refresh.";
-    return;
   }
 
-  loginButton.disabled = true;
-  loginButton.textContent = "Checking password...";
-  loginStatus.textContent = "";
+  // 4. SHOW OR HIDE PRIVATE MESSAGES
 
-  try {
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email: SHARED_LOGIN_EMAIL,
-      password: passwordInput.value
-    });
+  function showPrivateMessages(unlocked) {
 
-    if (error) {
-      loginStatus.textContent =
-        "Incorrect password or email. Please try again.";
-      passwordInput.value = "";
-      return;
+    isUnlocked = unlocked;
+
+    loginSection.hidden = unlocked;
+
+    messagesSection.hidden = !unlocked;
+
+    if (!unlocked) {
+
+      wishesContainer.replaceChildren();
+
     }
 
-    passwordInput.value = "";
-    showPrivateMessages(true);
-    await loadWishes();
+  }
+
+  // 5. LOAD BIRTHDAY WISHES
+
+  async function loadWishes() {
+
+    if (!supabaseClient || !isUnlocked) return;
+
+    wishesContainer.replaceChildren();
+
+    const loading = document.createElement("p");
+
+    loading.className = "empty";
+
+    loading.textContent = "Loading birthday wishes... 🎂";
+
+    wishesContainer.appendChild(loading);
+
+    const { data, error } = await supabaseClient
+
+      .from("birthday_wishes")
+
+      .select("id, name, message, created_at")
+
+      .order("created_at", { ascending: false })
+
+      .limit(100);
+
+    if (!isUnlocked) return;
+
+    wishesContainer.replaceChildren();
+
+    if (error) {
+
+      console.error("Loading failed:", error);
+
+      const p = document.createElement("p");
+
+      p.className = "empty";
+
+      p.textContent =
+
+        "Could not load birthday wishes. Check database permissions.";
+
+      wishesContainer.appendChild(p);
+
+      return;
+
+    }
+
+    if (!data || data.length === 0) {
+
+      const p = document.createElement("p");
+
+      p.className = "empty";
+
+      p.textContent = "No birthday wishes yet! 💗";
+
+      wishesContainer.appendChild(p);
+
+      return;
+
+    }
+
+    data.forEach(function(wish) {
+
+      const card = document.createElement("article");
+
+      card.className = "wish";
+
+      const heading = document.createElement("h3");
+
+      heading.textContent = "💌 " + wish.name;
+
+      const message = document.createElement("p");
+
+      message.textContent = wish.message;
+
+      const date = document.createElement("small");
+
+      const parsedDate = new Date(wish.created_at);
+
+      date.textContent = Number.isNaN(parsedDate.getTime())
+
+        ? ""
+
+        : parsedDate.toLocaleString();
+
+      card.append(heading, message, date);
+
+      wishesContainer.appendChild(card);
+
+    });
+
+  }
+
+  // 6. PASSWORD LOGIN
+
+  loginForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    if (!supabaseClient) {
+
+      loginStatus.textContent = "Database not connected.";
+
+      return;
+
+    }
+
+    loginButton.disabled = true;
+
+    loginButton.textContent = "Checking password...";
 
     loginStatus.textContent = "";
 
-  } catch (error) {
-    console.error("Login failed:", error);
-    loginStatus.textContent =
-      "Could not sign in. Please try again.";
-  } finally {
-    loginButton.disabled = false;
-    loginButton.textContent = "Unlock Messages";
-  }
-});
+    try {
 
+      const { error } = await supabaseClient.auth.signInWithPassword({
 
-    // End of your existing loadWishes() function
+        email: SHARED_LOGIN_EMAIL,
+
+        password: passwordInput.value
+
+      });
+
+      if (error) {
+
+        console.error("Authentication error:", error);
+
+        loginStatus.textContent =
+
+          "Incorrect password or login failed. Please try again.";
+
+        return;
+
+      }
+
+      passwordInput.value = "";
+
+      showPrivateMessages(true);
+
+      await loadWishes();
+
+    } catch (error) {
+
+      console.error("Login failed:", error);
+
+      loginStatus.textContent = "Unable to sign in. Please try again.";
+
+    } finally {
+
+      loginButton.disabled = false;
+
+      loginButton.textContent = "Unlock Messages";
+
     }
 
-    // PASTE STEP 2 HERE
-    function showPrivateMessages(isLoggedIn) {
-      loginSection.hidden = isLoggedIn;
-      messagesSection.hidden = !isLoggedIn;
+  });
 
-      if (!isLoggedIn) {
-        wishesContainer.replaceChildren();
+  // 7. LOGOUT
 
-        const lockedMessage = document.createElement("p");
-        lockedMessage.className = "empty";
-        lockedMessage.textContent =
-          "Enter the password to read the birthday wishes.";
+  logoutButton.addEventListener("click", async function() {
 
-        wishesContainer.appendChild(lockedMessage);
-      }
+    try {
+
+      const { error } = await supabaseClient.auth.signOut();
+
+      if (error) throw error;
+
+      showPrivateMessages(false);
+
+      loginStatus.textContent = "";
+
+    } catch (error) {
+
+      console.error("Logout failed:", error);
+
+      loginStatus.textContent = "Could not sign out. Please try again.";
+
     }
 
-    // Your login handler goes below this
-    loginForm.addEventListener("submit", async function(event) {
-      // Your login code
-    });
+  });
 
-    // Then your existing section 4: SAVE A NEW BIRTHDAY WISH
+  // 8. SAVE A NEW BIRTHDAY WISH
 
-    // ==========================================
-    // 4. SAVE A NEW BIRTHDAY WISH
-    // ==========================================
+  form.addEventListener("submit", async function(event) {
 
-    form.addEventListener("submit", async function(event) {
-      event.preventDefault();
+    event.preventDefault();
 
-      if (!supabaseClient) {
-        status.textContent = "Supabase is not connected yet.";
-        return;
-      }
+    if (!supabaseClient) {
 
-      const name = nameInput.value.trim();
-      const message = messageInput.value.trim();
+      status.textContent = "Database unavailable.";
 
-      if (name.length < 1 || name.length > 60) {
-        status.textContent =
-          "Your name must be between 1 and 60 characters.";
-        return;
-      }
+      return;
 
-      if (message.length < 1 || message.length > 1000) {
-        status.textContent =
-          "Your message must be between 1 and 1000 characters.";
-        return;
-      }
+    }
 
-      submitButton.disabled = true;
-      submitButton.textContent = "Sending your wish...";
-      status.textContent = "";
+    const name = nameInput.value.trim();
 
-      try {
-        const { error } = await supabaseClient
-          .from("birthday_wishes")
-          .insert({
-            name: name,
-            message: message
-          });
+    const message = messageInput.value.trim();
 
-        if (error) {
-          throw error;
-        }
+    if (name.length < 1 || name.length > 60 ||
 
-        form.reset();
-        status.textContent =
-          "Your birthday wish has been saved successfully! 🎉";
+        message.length < 1 || message.length > 1000) {
+
+      status.textContent = "Please enter a valid name and message.";
+
+      return;
+
+    }
+
+    submitButton.disabled = true;
+
+    submitButton.textContent = "Sending your wish...";
+
+    status.textContent = "";
+
+    try {
+
+      const { error } = await supabaseClient
+
+        .from("birthday_wishes")
+
+        .insert({
+
+          name: name,
+
+          message: message
+
+        });
+
+      if (error) throw error;
+
+      form.reset();
+
+      status.textContent = "Birthday wish saved successfully! 🎉";
+
+      // Only reload messages for logged-in visitors.
+
+      if (isUnlocked) {
 
         await loadWishes();
 
-      } catch (error) {
-        console.error("Saving wish failed:", error);
-        status.textContent =
-          "Sorry, your wish could not be saved. Please try again.";
-
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Send Birthday Wish ";
       }
-    });
 
-    // ==========================================
-    // 5. START THE PAGE
-    // ==========================================
+    } catch (error) {
 
-    if (connectToSupabase()) {
-      loadWishes();
+      console.error("Saving wish failed:", error);
+
+      status.textContent =
+
+        "Sorry, your wish could not be saved. Please try again.";
+
+    } finally {
+
+      submitButton.disabled = false;
+
+      submitButton.textContent = "Send Birthday Wish!";
+
     }
-  </script>
+
+  });
+
+  // 9. START WEBSITE
+
+  async function startPage() {
+
+    showPrivateMessages(false);
+
+    if (!connectToSupabase()) return;
+
+    try {
+
+      const { data, error } = await supabaseClient.auth.getUser();
+
+      if (error) {
+
+        console.warn("Session check:", error.message);
+
+      }
+
+      if (data?.user &&
+
+          data.user.email === SHARED_LOGIN_EMAIL) {
+
+        showPrivateMessages(true);
+
+        await loadWishes();
+
+      }
+
+    } catch (error) {
+
+      console.error("Session check failed:", error);
+
+    }
+
+  }
+
+  startPage();
+
+</script>
 
 </body>
 </html>
