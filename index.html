@@ -1,4 +1,30 @@
 <body>
+  <div id="password-screen">
+  <h2>Private Website 🔒</h2>
+  <p>Please enter the password to continue.</p>
+
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="unlock()">Enter</button>
+  <p id="error" style="color:red;"></p>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("website").style.display = "none";
+  });
+
+  function unlock() {
+    const password = document.getElementById("password").value;
+
+    if (password === "13052019") {
+      document.getElementById("password-screen").style.display = "none";
+      document.getElementById("website").style.display = "block";
+    } else {
+      document.getElementById("error").textContent = "Incorrect password";
+    }
+  }
+</script>
+  <div id="website" style="display:none;">
 
   
       <link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css'>
@@ -165,5 +191,5 @@
     <html>
     <head>
     <style>
-      
+      </div>
 </body>
